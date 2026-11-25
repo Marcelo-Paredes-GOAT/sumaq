@@ -762,10 +762,12 @@
       margin-bottom: 14px;
     }
 
-    canvas#synthetic-video {
+    canvas#synthetic-video,
+    iframe#youtube-video {
       width: 100%;
       height: 100%;
       display: block;
+      border: none;
     }
 
     .video-controls {
@@ -1395,20 +1397,21 @@
         </div>
       </div>
 
-      <!-- VISTA 2: DETALLE DEL CURSO Y VIDEO SINTÉTICO -->
+      <!-- VISTA 2: DETALLE DEL CURSO Y VIDEO -->
       <div id="course-detail-view">
         <div class="back-bar">
           <button class="btn-back" onclick="volverAlCatalogo()">← Volver a Mis cursos</button>
         </div>
 
         <div class="detail-layout">
-          <!-- Columna Izquierda: Video Sintético y Explicación -->
+          <!-- Columna Izquierda: Video y Explicación -->
           <div class="video-card">
             <div class="video-container">
+              <iframe id="youtube-video" src="" title="Video de Capacitación Sumaq" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:none;"></iframe>
               <canvas id="synthetic-video" width="800" height="450"></canvas>
             </div>
 
-            <div class="video-controls">
+            <div class="video-controls" id="syntheticControls">
               <button class="v-btn" id="playPauseBtn" onclick="toggleVideo()">⏸ Pausar</button>
               <button class="v-btn" style="background:#FFC72C; color:#9B0A21;" onclick="reiniciarVideo()">↺ Reiniciar</button>
               <div class="v-timeline" onclick="seekVideo(event)">
@@ -1476,6 +1479,7 @@
         porVencer: true,
         temasCompletados: 0,
         totalTemas: 1,
+        youtubeUrl: "https://www.youtube.com/embed/OK4YJPvQUMs",
         descripcion: "Aprende el protocolo oficial de Pollería Sumaq para recibir a las familias y comensales desde que cruzan la puerta. Domina la toma de pedidos sin errores, ofreciendo acompañamientos (papas extra, ensaladas, cremas y bebidas) de manera amable y natural.",
         objetivos: [
           "Saludar con calidez y contacto visual en menos de 5 segundos.",
@@ -1501,6 +1505,7 @@
         porVencer: false,
         temasCompletados: 0,
         totalTemas: 1,
+        youtubeUrl: "https://www.youtube.com/embed/uPLtsBK3YeQ",
         descripcion: "El pollo a la brasa debe llegar crocante y caliente a casa. En este curso aprenderás el sellado de seguridad Sumaq, verificación de cremas, cubiertos y el trato cordial tanto por teléfono/WhatsApp como en la entrega en puerta.",
         objetivos: [
           "Verificar el checklist de empaque: pollo, papas ventiladas, ensalada aparte y cremas selladas.",
@@ -1526,6 +1531,7 @@
         porVencer: true,
         temasCompletados: 0,
         totalTemas: 1,
+        youtubeUrl: "https://www.youtube.com/embed/fjITFOQgKIw",
         descripcion: "Convierte un inconveniente (demora en hora punta, presa equivocada o temperatura) en una oportunidad para fidelizar al cliente. Aplica el método E.S.A. (Escuchar, Solucionar y Agradecer) sin discutir ni buscar excusas.",
         objetivos: [
           "Mantener la calma y escuchar activamente sin interrumpir al comensal.",
@@ -1817,7 +1823,7 @@
     }
 
     // =========================================================
-    // NAVEGACIÓN A DETALLE DEL CURSO Y VIDEO SINTÉTICO
+    // NAVEGACIÓN A DETALLE DEL CURSO Y VIDEO
     // =========================================================
     function abrirCurso(id) {
       const curso = cursosSumaq.find(c => c.id === id);
@@ -1844,8 +1850,8 @@
       modList.innerHTML = `
         <div class="module-item active-mod">
           <div>
-            <strong style="font-size:0.9rem; color:var(--red-dark);">1. Video Sintético Demostrativo</strong>
-            <div style="font-size:0.78rem; color:var(--text-muted);">Duración: 00:15 • Caso práctico en salón</div>
+            <strong style="font-size:0.9rem; color:var(--red-dark);">1. Video Demostrativo</strong>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Caso práctico en salón</div>
           </div>
           <span style="color:var(--red-primary); font-weight:bold;">▶ Viendo</span>
         </div>
@@ -1876,12 +1882,29 @@
       document.getElementById('course-detail-view').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Iniciar video sintético
-      reiniciarVideo();
+      // Mostrar video de YouTube si existe, o video sintético en su defecto
+      const ytFrame = document.getElementById('youtube-video');
+      const canvasEl = document.getElementById('synthetic-video');
+      const controlsEl = document.getElementById('syntheticControls');
+
+      if (curso.youtubeUrl) {
+        detenerVideo();
+        canvasEl.style.display = 'none';
+        controlsEl.style.display = 'none';
+        ytFrame.style.display = 'block';
+        ytFrame.src = curso.youtubeUrl;
+      } else {
+        ytFrame.style.display = 'none';
+        ytFrame.src = '';
+        canvasEl.style.display = 'block';
+        controlsEl.style.display = 'flex';
+        reiniciarVideo();
+      }
     }
 
     function volverAlCatalogo() {
       detenerVideo();
+      document.getElementById('youtube-video').src = '';
       document.getElementById('course-detail-view').style.display = 'none';
       document.getElementById('catalog-view').style.display = 'block';
       renderizarCarrusel();
