@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sumaq Academy - Plataforma de Capacitaciones</title>
+  <style>
+    :root {
+      --red-primary: #C8102E;
+      --red-dark: #9B0A21;
+      --red-light: #FFF0F2;
+      --yellow-primary: #FFC72C;
+      --yellow-dark: #E0A800;
+      --yellow-light: #FFF9E6;
+      --white: #FFFFFF;
+      --bg-page: #F8F9FA;
+      --border-color: #E5E7EB;
+      --text-dark: #1F2937;
+      --text-muted: #6B7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* CONTENEDOR PRINCIPAL IZQUIERDO */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-right: 54px; /* Espacio para la barra lateral derecha */
+    }
+
+    /* NAVBAR SUPERIOR */
+    header.topbar {
+      background-color: var(--white);
+      height: 64px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--red-primary);
+      cursor: pointer;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--red-primary), var(--red-dark));
+      color: var(--yellow-primary);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(200, 16, 46, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      height: 100%;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      color: var(--red-primary);
+    }
+
+    .nav-item.active {
+      color: var(--red-primary);
+      font-weight: 700;
+      border-bottom-color: var(--red-primary);
+    }
+
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .notif-btn {
+      background: none;
+      border: none;
+      color: var(--red-primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      background-color: var(--yellow-primary);
+      border-radius: 50%;
+      border: 1px solid var(--white);
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--red-primary);
+      color: var(--yellow-primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--yellow-primary);
+      cursor: pointer;
+    }
+
+    /* BARRA LATERAL DERECHA FIJA (IGUAL A LA IMAGEN) */
+    aside.right-sidebar {
+      width: 54px;
+      background-color: var(--red-primary);
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 14px;
+      gap: 20px;
+      z-index: 60;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .side-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 1.1rem;
+    }
+
+    .side-icon:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .side-icon.active-side {
+      background-color: var(--yellow-primary);
+      color: var(--red-dark);
+      font-weight: bold;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+    main.container {
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 32px 48px;
+    }
+
+    /* FILA 1: TÍTULO Y BUSCADOR */
+    .top-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .page-title span.icon {
+      color: var(--red-primary);
+      font-size: 1.3rem;
+    }
+
+    .search-box {
+      position: relative;
+      width: 280px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 36px 9px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--white);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--red-primary);
+    }
+
+    .search-box .search-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* FILA 2: BLOQUE ESCUELA Y AVANCE */
+    .school-stats-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .school-selector {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--red-primary);
+      cursor: pointer;
+    }
+
+    .progress-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .progress-text {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background-color: var(--red-light);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--red-primary), var(--yellow-primary));
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* FILA 3: CONTINÚA DONDE LO DEJASTE (CARRUSEL HORIZONTAL) */
+    .continue-section {
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-header h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .course-count-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--red-primary);
+      cursor: pointer;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mini-card {
+      min-width: 245px;
+      max-width: 245px;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mini-card:hover {
+      border-color: var(--red-primary);
+      box-shadow: 0 3px 8px rgba(200, 16, 46, 0.1);
+    }
+
+    .mini-card-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .mini-card-meta {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .mini-card-meta span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--red-primary);
+    }
+
+    .mini-card-meta small {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .carousel-arrow {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--red-primary);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    /* FILA 4: PESTAÑAS DE FILTRO */
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .filter-pill .count-box {
+      background-color: #F3F4F6;
+      color: var(--text-dark);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.78rem;
+    }
+
+    .filter-pill.active {
+      background-color: var(--red-primary);
+      border-color: var(--red-primary);
+      color: var(--white);
+    }
+
+    .filter-pill.active .count-box {
+      background-color: var(--yellow-primary);
+      color: var(--red-dark);
+    }
+
+    /* FILA 5: GRID DE TARJETAS DE CURSOS */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .course-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(200, 16, 46, 0.12);
+    }
+
+    /* BANNER GRÁFICO DE CADA TARJETA (ESTILO MAKRO PERO ROJO/AMARILLO/BLANCO) */
+    .card-banner {
+      height: 158px;
+      background: radial-gradient(circle at 80% 30%, #E31837 0%, #8A081D 100%);
+      position: relative;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Formas geométricas amarillas decorativas */
+    .card-banner::before {
+      content: "";
+      position: absolute;
+      top: -22px;
+      left: -18px;
+      width: 68px;
+      height: 68px;
+      background-color: var(--yellow-primary);
+      border-radius: 50%;
+    }
+
+    .card-banner::after {
+      content: "";
+      position: absolute;
+      bottom: -28px;
+      right: -15px;
+      width: 75px;
+      height: 75px;
+      background-color: var(--yellow-primary);
+      border-radius: 50%;
+      opacity: 0.95;
+    }
+
+    .banner-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-logo-pill {
+      background-color: var(--yellow-primary);
+      color: var(--red-dark);
+      font-weight: 900;
+      font-size: 0.72rem;
+      padding: 3px 12px;
+      border-radius: 0 0 8px 8px;
+      margin-top: -14px;
+      margin-left: 38px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge {
+      background-color: var(--white);
+      color: var(--text-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .status-badge .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--red-primary);
+    }
+
+    .status-badge.completed .status-dot {
+      background-color: #10B981;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .banner-texts {
+      max-width: 65%;
+    }
+
+    .banner-subtitle {
+      color: var(--white);
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .banner-title {
+      color: var(--white);
+      font-size: 0.85rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin: 3px 0;
+      text-transform: uppercase;
+    }
+
+    .banner-category {
+      color: var(--yellow-primary);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .banner-year {
+      color: var(--white);
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .banner-illustration {
+      font-size: 2.7rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      z-index: 2;
+    }
+
+    /* CUERPO DE LA TARJETA */
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .doc-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background-color: var(--red-light);
+      color: var(--red-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .card-course-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.35;
+      flex: 1;
+    }
+
+    .info-circle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .card-topics {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-continue {
+      background-color: var(--red-primary);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-continue:hover {
+      background-color: var(--red-dark);
+    }
+
+    .btn-continue:active {
+      transform: scale(0.97);
+    }
+
+    /* =========================================================
+       VISTA DETALLE DEL CURSO + VIDEO SINTÉTICO
+       ========================================================= */
+    #course-detail-view {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-bar {
+      margin-bottom: 18px;
+    }
+
+    .btn-back {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--red-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      background-color: var(--red-light);
+      border-color: var(--red-primary);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: 24px;
+    }
+
+    .video-card, .info-panel {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #1A0508;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--yellow-primary);
+      margin-bottom: 14px;
+    }
+
+    canvas#synthetic-video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .video-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: var(--red-light);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+
+    .v-btn {
+      background-color: var(--red-primary);
+      color: var(--white);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+
+    .v-btn:hover {
+      background-color: var(--red-dark);
+    }
+
+    .v-timeline {
+      flex: 1;
+      height: 8px;
+      background-color: #E5E7EB;
+      border-radius: 99px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .v-progress {
+      height: 100%;
+      width: 0%;
+      background-color: var(--red-primary);
+    }
+
+    .v-time {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--red-dark);
+      min-width: 78px;
+      text-align: right;
+    }
+
+    .detail-tag {
+      display: inline-block;
+      background-color: var(--yellow-primary);
+      color: var(--red-dark);
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .detail-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .detail-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 18px;
+    }
+
+    .objectives-box {
+      background-color: var(--yellow-light);
+      border-left: 4px solid var(--yellow-primary);
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 16px;
+    }
+
+    .objectives-box h4 {
+      font-size: 0.92rem;
+      color: var(--red-dark);
+      margin-bottom: 8px;
+    }
+
+    .objectives-box ul {
+      padding-left: 18px;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .module-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0 22px;
+    }
+
+    .module-item {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #FAFAFA;
+    }
+
+    .module-item.active-mod {
+      border-color: var(--red-primary);
+      background-color: var(--red-light);
+    }
+
+    .btn-complete-course {
+      width: 100%;
+      background-color: var(--yellow-primary);
+      color: var(--red-dark);
+      border: 2px solid var(--red-primary);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-complete-course:hover {
+      background-color: var(--red-primary);
+      color: var(--white);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1150px) {
+      .courses-grid { grid-template-columns: repeat(3, 1fr); }
+      .detail-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 850px) {
+      .courses-grid { grid-template-columns: repeat(2, 1fr); }
+      .school-stats-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .courses-grid { grid-template-columns: 1fr; }
+      main.container { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="main-wrapper">
+    <!-- NAVBAR SUPERIOR -->
+    <header class="topbar">
+      <div class="brand-logo" onclick="volverAlCatalogo()">
+        <span class="brand-badge">SUMAQ</span>
+        <span>Academia Pollería</span>
+      </div>
+
+      <nav class="nav-links">
+        <a class="nav-item" onclick="volverAlCatalogo()">Inicio</a>
+        <a class="nav-item active" onclick="volverAlCatalogo()">Cursos</a>
+        <a class="nav-item" onclick="alert('Módulo de Sesiones en vivo de Pollería Sumaq')">Sesiones</a>
+        <a class="nav-item" onclick="alert('Tu avance actual se muestra en el panel superior')">Progreso</a>
+      </nav>
+
+      <div class="user-actions">
+        <button class="notif-btn" title="Notificaciones">
+          🔔<span class="notif-dot"></span>
+        </button>
+        <div class="avatar" title="Colaborador Sumaq">SQ</div>
+      </div>
+    </header>
+
+    <!-- ÁREA CENTRAL -->
+    <main class="container">
+
+      <!-- VISTA 1: CATÁLOGO DE CURSOS (IDÉNTICA A LA CAPTURA) -->
+      <div id="catalog-view">
+        <!-- Título y Buscador -->
+        <div class="top-header-row">
+          <div class="page-title">
+            <span class="icon">🎓</span>
+            <span>Mis cursos</span>
+          </div>
+
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Busca un curso" onkeyup="filtrarCursos()" />
+            <span class="search-icon">🔍</span>
+          </div>
+        </div>
+
+        <!-- Escuela y Avance -->
+        <div class="school-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label"><span>ESCUELA</span></div>
+            <div class="school-selector">
+              <span>Sumaq - Excelencia en Atención al Cliente 2026 🔥🍗</span>
+              <span>⌄</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">
+              <span>AVANCE DE LA ESCUELA</span>
+              <span id="inProgressLabel">0 en curso</span>
+            </div>
+            <div class="progress-info">
+              <div class="progress-text" id="progressSummaryText">0 de 8 cursos completados</div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Continúa donde lo dejaste -->
+        <div class="continue-section">
+          <div class="section-header">
+            <h3>Continúa donde lo dejaste</h3>
+            <span class="course-count-badge" id="totalCoursesLabel">8 cursos ⌃</span>
+          </div>
+
+          <div class="carousel-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- Se llena dinámicamente con JS -->
+            </div>
+            <button class="carousel-arrow" onclick="scrollCarousel()" title="Siguiente">›</button>
+          </div>
+        </div>
+
+        <!-- Filtros por estado -->
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-pill active" data-filter="todos" onclick="cambiarFiltro('todos', this)">
+            Todos <span class="count-box" id="count-todos">8</span>
+          </button>
+          <button class="filter-pill" data-filter="por-vencer" onclick="cambiarFiltro('por-vencer', this)">
+            <span class="dot" style="background:#F59E0B;"></span> Por vencer <span class="count-box" id="count-vencer">2</span>
+          </button>
+          <button class="filter-pill" data-filter="en-curso" onclick="cambiarFiltro('en-curso', this)">
+            <span class="dot" style="background:#C8102E;"></span> En curso <span class="count-box" id="count-curso">0</span>
+          </button>
+          <button class="filter-pill" data-filter="sin-iniciar" onclick="cambiarFiltro('sin-iniciar', this)">
+            <span class="dot" style="background:#9CA3AF;"></span> Sin iniciar <span class="count-box" id="count-sin">8</span>
+          </button>
+          <button class="filter-pill" data-filter="completado" onclick="cambiarFiltro('completado', this)">
+            <span class="dot" style="background:#10B981;"></span> Completado <span class="count-box" id="count-comp">0</span>
+          </button>
+        </div>
+
+        <!-- Grid de Tarjetas -->
+        <div class="courses-grid" id="coursesGrid">
+          <!-- Se renderiza dinámicamente con JS -->
+        </div>
+      </div>
+
+      <!-- VISTA 2: DETALLE DEL CURSO Y VIDEO SINTÉTICO -->
+      <div id="course-detail-view">
+        <div class="back-bar">
+          <button class="btn-back" onclick="volverAlCatalogo()">← Volver a Mis cursos</button>
+        </div>
+
+        <div class="detail-layout">
+          <!-- Columna Izquierda: Video Sintético y Explicación -->
+          <div class="video-card">
+            <div class="video-container">
+              <canvas id="synthetic-video" width="800" height="450"></canvas>
+            </div>
+
+            <div class="video-controls">
+              <button class="v-btn" id="playPauseBtn" onclick="toggleVideo()">⏸ Pausar</button>
+              <button class="v-btn" style="background:#FFC72C; color:#9B0A21;" onclick="reiniciarVideo()">↺ Reiniciar</button>
+              <div class="v-timeline" onclick="seekVideo(event)">
+                <div class="v-progress" id="videoProgressBar"></div>
+              </div>
+              <div class="v-time" id="videoTimeDisplay">00:00 / 00:15</div>
+            </div>
+
+            <span class="detail-tag" id="detailCategory">ATENCIÓN AL CLIENTE</span>
+            <h1 class="detail-title" id="detailTitle">Título del Curso</h1>
+            <p class="detail-desc" id="detailDescription">Descripción detallada del curso.</p>
+
+            <div class="objectives-box">
+              <h4>🎯 ¿Qué aprenderás en esta capacitación de Sumaq?</h4>
+              <ul id="detailObjectives"></ul>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Temario y Progreso -->
+          <div class="info-panel">
+            <h3 style="color:var(--red-primary); margin-bottom:6px;">Contenido del Curso</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Revisa el video demostrativo y completa la lección para sumar puntos en tu evaluación Sumaq.</p>
+
+            <div class="module-list" id="detailModules"></div>
+
+            <div style="background:var(--red-light); padding:14px; border-radius:8px; margin-bottom:18px; font-size:0.85rem;">
+              <strong>💡 Tip de Servicio Sumaq:</strong><br/>
+              <span id="detailTip">Recuerda siempre recibir al cliente con una sonrisa cálida dentro de los primeros 5 segundos de su ingreso al salón.</span>
+            </div>
+
+            <button class="btn-complete-course" id="completeCourseBtn" onclick="marcarCompletado()">
+              ✓ Marcar curso como completado
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- BARRA LATERAL DERECHA ROJA (ESTILO DE LA IMAGEN) -->
+  <aside class="right-sidebar">
+    <div class="side-icon" title="Acceso rápido">+</div>
+    <div class="side-icon active-side" title="Cursos" onclick="volverAlCatalogo()">📖</div>
+    <div class="side-icon" title="Indicadores de Servicio">📈</div>
+    <div class="side-icon" title="Equipo Sumaq">👥</div>
+    <div class="side-icon" title="Evaluaciones">✅</div>
+    <div class="side-icon" title="Mensajes">💬</div>
+    <div class="side-icon" title="Ayuda">❓</div>
+  </aside>
+
+  <script>
+    // =========================================================
+    // BASE DE DATOS DE CURSOS ORIENTADOS A POLLERÍA SUMAQ
+    // =========================================================
+    const cursosSumaq = [
+      {
+        id: 1,
+        codigo: "Sumaq - Salón - Bienvenida y Toma de Pedido 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "BIENVENIDA Y TOMA DE PEDIDO",
+        categoria: "SALÓN Y MESA",
+        emoji: "🍗",
+        estado: "sin-iniciar",
+        porVencer: true,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "Aprende el protocolo oficial de Pollería Sumaq para recibir a las familias y comensales desde que cruzan la puerta. Domina la toma de pedidos sin errores, ofreciendo acompañamientos (papas extra, ensaladas, cremas y bebidas) de manera amable y natural.",
+        objetivos: [
+          "Saludar con calidez y contacto visual en menos de 5 segundos.",
+          "Guiar al cliente a una mesa limpia y entregar cartas en perfecto estado.",
+          "Aplicar venta sugestiva de entradas (tequeños, anticuchos) y jarras de chicha morada.",
+          "Confirmar el pedido en voz alta para evitar demoras en cocina."
+        ],
+        tip: "Siempre pregunta si desean cremas completas (ají pollero, mayonesa, vinagreta) antes de llevar el pollo a la mesa.",
+        escenasVideo: [
+          { titulo: "Paso 1: El Saludo Sumaq", texto: "¡Bienvenidos a Pollería Sumaq! ¿Mesa para cuántos?", icono: "👋" },
+          { titulo: "Paso 2: Toma de Pedido", texto: "Sugiere 1/4 o 1 Pollo a la brasa + Chicha Morada.", icono: "📋" },
+          { titulo: "Paso 3: Servicio en Mesa", texto: "Sirve caliente, con cremas frescas y sonrisa.", icono: "🍗" }
+        ]
+      },
+      {
+        id: 2,
+        codigo: "Sumaq - Delivery - Empaque y Entrega Rápida 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "DELIVERY Y EMPAQUE PERFECTO",
+        categoria: "DELIVERY & LLEVAR",
+        emoji: "🛵",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "El pollo a la brasa debe llegar crocante y caliente a casa. En este curso aprenderás el sellado de seguridad Sumaq, verificación de cremas, cubiertos y el trato cordial tanto por teléfono/WhatsApp como en la entrega en puerta.",
+        objetivos: [
+          "Verificar el checklist de empaque: pollo, papas ventiladas, ensalada aparte y cremas selladas.",
+          "Colocar el precinto de seguridad 'Garantía Sumaq' frente a cámara.",
+          "Comunicar tiempos reales de entrega con empatía.",
+          "Despedirse agradeciendo la preferencia por Sumaq."
+        ],
+        tip: "Nunca cierres herméticamente la caja de papas fritas; usa las ranuras de ventilación para que no pierdan su crocancia.",
+        escenasVideo: [
+          { titulo: "Paso 1: Armado de Caja", texto: "Separa ensalada fría del pollo recién salido del horno.", icono: "📦" },
+          { titulo: "Paso 2: Control de Cremas", texto: "Verifica ají de la casa, mayonesa y servilletas.", icono: "🌶️" },
+          { titulo: "Paso 3: Entrega Cordial", texto: "Entrega el pedido con precinto intacto y buena actitud.", icono: "🛵" }
+        ]
+      },
+      {
+        id: 3,
+        codigo: "Sumaq - Calidad - Manejo de Quejas y Reclamos 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "MANEJO DE QUEJAS EN SALÓN",
+        categoria: "ATENCIÓN AL CLIENTE",
+        emoji: "🤝",
+        estado: "sin-iniciar",
+        porVencer: true,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "Convierte un inconveniente (demora en hora punta, presa equivocada o temperatura) en una oportunidad para fidelizar al cliente. Aplica el método E.S.A. (Escuchar, Solucionar y Agradecer) sin discutir ni buscar excusas.",
+        objetivos: [
+          "Mantener la calma y escuchar activamente sin interrumpir al comensal.",
+          "Ofrecer una disculpa sincera en nombre de Pollería Sumaq.",
+          "Activar el cambio inmediato de presa o cortesía con el jefe de salón.",
+          "Hacer seguimiento a los 5 minutos para confirmar satisfacción."
+        ],
+        tip: "Un cliente cuyo problema se resuelve rápido y con amabilidad vuelve con más frecuencia que uno que nunca tuvo problemas.",
+        escenasVideo: [
+          { titulo: "Paso 1: Escucha Activa", texto: "Atiende al cliente con empatía y sin interrumpir.", icono: "👂" },
+          { titulo: "Paso 2: Acción Inmediata", texto: "Coordina con horno/cocina el cambio prioritario.", icono: "⚡" },
+          { titulo: "Paso 3: Cliente Feliz", texto: "Verifica que la nueva orden cumpla sus expectativas.", icono: "😊" }
+        ]
+      },
+      {
+        id: 4,
+        codigo: "Sumaq - Caja - Cobro Ágil y Despedida Cálida 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "COBRO ÁGIL Y DESPEDIDA CÁLIDA",
+        categoria: "CAJA Y FACTURACIÓN",
+        emoji: "💳",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "El último recuerdo que se lleva el cliente de Sumaq es el momento del pago y la despedida. Aprende a llevar la cuenta rápidamente, manejar POS, Yape/Plin, boletas o facturas y despedir invitando a volver.",
+        objetivos: [
+          "Llevar la cuenta en menos de 2 minutos desde que el cliente la solicita.",
+          "Consultar previamente si desea Boleta o Factura y medio de pago.",
+          "Evitar errores en división de cuentas entre grupos.",
+          "Despedir en puerta: 'Gracias por visitar Sumaq, ¡los esperamos pronto!'"
+        ],
+        tip: "Lleva siempre el POS inalámbrico cargado a la mesa junto con la precuenta para ahorrarle tiempo al cliente.",
+        escenasVideo: [
+          { titulo: "Paso 1: Precuenta Clara", texto: "Revisa que todos los consumos estén correctos.", icono: "🧾" },
+          { titulo: "Paso 2: Pago sin Demoras", texto: "Acepta tarjetas, Yape, Plin o efectivo con agilidad.", icono: "💳" },
+          { titulo: "Paso 3: Despedida Sumaq", texto: "Agradece su visita e invítalos a regresar pronto.", icono: "💛" }
+        ]
+      },
+      {
+        id: 5,
+        codigo: "Sumaq - Inocuidad - Higiene y Presentación Personal 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "HIGIENE Y PRESENTACIÓN EN SALÓN",
+        categoria: "CALIDAD E INOCUIDAD",
+        emoji: "✨",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "La limpieza visual del salón, los dispensadores de cremas y el uniforme impecable del equipo Sumaq transmiten confianza inmediata al comensal.",
+        objetivos: [
+          "Portar uniforme rojo/amarillo Sumaq limpio, cabello recogido y uñas cortas.",
+          "Aplicar el lavado de manos cada 30 minutos o al manipular dinero.",
+          "Desinfectar mesas y sillas inmediatamente después de que se retire una mesa.",
+          "Mantener los pomos de cremas limpios y refrigerados según norma."
+        ],
+        tip: "Una mesa limpia en menos de 90 segundos permite rotar más rápido en horas punta de almuerzo y cena.",
+        escenasVideo: [
+          { titulo: "Paso 1: Uniforme Impecable", texto: "Mandil limpio, gorra puesta y sonrisa lista.", icono: "🧑‍🍳" },
+          { titulo: "Paso 2: Lavado de Manos", texto: "20 segundos con jabón desinfectante antes de servir.", icono: "🧼" },
+          { titulo: "Paso 3: Salón Reluciente", texto: "Mesas desinfectadas y saleros listos para el siguiente.", icono: "✨" }
+        ]
+      },
+      {
+        id: 6,
+        codigo: "Sumaq - Ventas - Sugerencia de Combos y Postres 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "VENTA SUGESTIVA DE COMBOS",
+        categoria: "TÉCNICAS DE VENTA",
+        emoji: "🍟",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "Mejora la experiencia gastronómica del cliente recomendando nuestras especialidades: porción de chaufa brasa, anticuchos de corazón, chicha morada natural y postres tradicionales.",
+        objetivos: [
+          "Recomendar combos familiares según el número de comensales.",
+          "Ofrecer bebidas en jarra como opción más conveniente.",
+          "Sugerir postres o infusiones digestivas al retirar los platos.",
+          "Conocer los ingredientes de cada plato para responder alergias."
+        ],
+        tip: "En lugar de preguntar '¿Desea algo más?', sugiere algo concreto: '¿Acompañamos su pollo con una jarra de chicha morada helada?'",
+        escenasVideo: [
+          { titulo: "Paso 1: Detecta la Ocasión", texto: "Identifica si es almuerzo rápido o cena familiar.", icono: "👨‍👩‍👧‍👦" },
+          { titulo: "Paso 2: Sugerencia Atractiva", texto: "Propón el Combo Familiar Sumaq con chaufa y gaseosa.", icono: "🍗" },
+          { titulo: "Paso 3: Cierre Dulce", texto: "Ofrece torta de chocolate o infusión al finalizar.", icono: "🍰" }
+        ]
+      },
+      {
+        id: 7,
+        codigo: "Sumaq - Horno y Cocina - Sincronización con Salón 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "SINCRONIZACIÓN HORNO Y SALÓN",
+        categoria: "OPERACIONES",
+        emoji: "🔥",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "La comunicación fluida entre los mozos, el hornero y el área de papas fritas garantiza que toda la mesa reciba sus platos al mismo tiempo y a la temperatura ideal.",
+        objetivos: [
+          "Comandar correctamente el corte de presa (pecho o pierna/encuentro).",
+          "Avisar con anticipación cuando ingresan grupos grandes (+8 personas).",
+          "Revisar el pase antes de llevar el plato: papas doradas y ensalada fresca.",
+          "Mantener el respeto y compañerismo bajo presión en hora punta."
+        ],
+        tip: "Nunca saques un pedido incompleto a la mesa sin avisar al cliente si algún acompañamiento saldrá en 1 minuto.",
+        escenasVideo: [
+          { titulo: "Paso 1: Comanda Exacta", texto: "Especifica corte de presa y término de ensalada.", icono: "🖥️" },
+          { titulo: "Paso 2: Control en el Pase", texto: "Verifica temperatura y presentación del plato.", icono: "🔥" },
+          { titulo: "Paso 3: Servicio Simultáneo", texto: "Todos en la mesa comen juntos y calientito.", icono: "🍽️" }
+        ]
+      },
+      {
+        id: 8,
+        codigo: "Sumaq - Cultura - Valores y Trabajo en Equipo 2026",
+        bannerSub: "CURSO DE:",
+        bannerTitle: "CULTURA Y PASIÓN SUMAQ",
+        categoria: "CULTURA EMPRESARIAL",
+        emoji: "🏆",
+        estado: "sin-iniciar",
+        porVencer: false,
+        temasCompletados: 0,
+        totalTemas: 1,
+        descripcion: "'Sumaq' significa rico, hermoso y excelente en quechua. Conoce nuestra historia, valores de hospitalidad peruana y cómo el apoyo mutuo entre compañeros hace que cada turno sea un éxito.",
+        objetivos: [
+          "Vivir los 4 pilares Sumaq: Sabor, Calidez, Rapidez y Limpieza.",
+          "Apoyar a compañeros en horas de alta demanda sin importar el puesto.",
+          "Mantener una actitud positiva y respetuosa en todo momento.",
+          "Crecer profesionalmente dentro de la familia Pollería Sumaq."
+        ],
+        tip: "Si ves a un compañero con las manos ocupadas y una mesa llamando, acércate y atiende con una sonrisa: todos somos Sumaq.",
+        escenasVideo: [
+          { titulo: "Pilar 1: Sabor Peruano", texto: "Orgullo por servir el mejor pollo a la brasa.", icono: "🇵🇪" },
+          { titulo: "Pilar 2: Equipo Unido", texto: "Nos apoyamos en cada turno y hora punta.", icono: "🤝" },
+          { titulo: "Pilar 3: Excelencia Sumaq", texto: "Cada cliente se va con ganas de volver.", icono: "🏆" }
+        ]
+      }
+    ];
+
+    let filtroActual = 'todos';
+    let cursoActivoId = null;
+
+    // Variables para el video sintético en Canvas
+    let animFrameId = null;
+    let videoPlaying = false;
+    let videoProgress = 0; // de 0 a 15 segundos
+    const VIDEO_DURATION = 15;
+    let lastTimestamp = null;
+
+    // =========================================================
+    // INICIALIZACIÓN Y RENDERIZADO DEL CATÁLOGO
+    // =========================================================
+    function init() {
+      actualizarContadores();
+      renderizarCarrusel();
+      renderizarTarjetas();
+    }
+
+    function actualizarContadores() {
+      const total = cursosSumaq.length;
+      const completados = cursosSumaq.filter(c => c.estado === 'completado').length;
+      const enCurso = cursosSumaq.filter(c => c.estado === 'en-curso').length;
+      const sinIniciar = cursosSumaq.filter(c => c.estado === 'sin-iniciar').length;
+      const porVencer = cursosSumaq.filter(c => c.porVencer && c.estado !== 'completado').length;
+
+      document.getElementById('count-todos').textContent = total;
+      document.getElementById('count-vencer').textContent = porVencer;
+      document.getElementById('count-curso').textContent = enCurso;
+      document.getElementById('count-sin').textContent = sinIniciar;
+      document.getElementById('count-comp').textContent = completados;
+
+      document.getElementById('totalCoursesLabel').textContent = `${total} cursos ⌃`;
+      document.getElementById('inProgressLabel').textContent = `${enCurso} en curso`;
+      document.getElementById('progressSummaryText').textContent = `${completados} de ${total} cursos completados`;
+
+      const pct = Math.round((completados / total) * 100);
+      document.getElementById('progressBarFill').style.width = `${pct}%`;
+    }
+
+    function renderizarCarrusel() {
+      const track = document.getElementById('carouselTrack');
+      track.innerHTML = '';
+
+      cursosSumaq.forEach(curso => {
+        const div = document.createElement('div');
+        div.className = 'mini-card';
+        div.onclick = () => abrirCurso(curso.id);
+        div.innerHTML = `
+          <div class="mini-card-title">${curso.codigo}</div>
+          <div class="mini-card-meta">
+            <span>${curso.temasCompletados}/${curso.totalTemas} ›</span>
+            <small>temas</small>
+          </div>
+        `;
+        track.appendChild(div);
+      });
+    }
+
+    function scrollCarousel() {
+      const track = document.getElementById('carouselTrack');
+      track.scrollBy({ left: 260, behavior: 'smooth' });
+    }
+
+    function cambiarFiltro(nuevoFiltro, btnElement) {
+      filtroActual = nuevoFiltro;
+      document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+      renderizarTarjetas();
+    }
+
+    function filtrarCursos() {
+      renderizarTarjetas();
+    }
+
+    function renderizarTarjetas() {
+      const grid = document.getElementById('coursesGrid');
+      const textoBusqueda = document.getElementById('searchInput').value.toLowerCase().trim();
+      grid.innerHTML = '';
+
+      const filtrados = cursosSumaq.filter(curso => {
+        const coincideTexto = curso.codigo.toLowerCase().includes(textoBusqueda) ||
+                              curso.categoria.toLowerCase().includes(textoBusqueda);
+        if (!coincideTexto) return false;
+
+        if (filtroActual === 'todos') return true;
+        if (filtroActual === 'por-vencer') return curso.porVencer && curso.estado !== 'completado';
+        return curso.estado === filtroActual;
+      });
+
+      if (filtrados.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted);">No se encontraron cursos con ese filtro.</p>`;
+        return;
+      }
+
+      filtrados.forEach(curso => {
+        let textoEstado = "Sin iniciar";
+        let claseEstado = "";
+        if (curso.estado === "en-curso") {
+          textoEstado = "En curso";
+        } else if (curso.estado === "completado") {
+          textoEstado = "Completado";
+          claseEstado = "completed";
+        }
+
+        const card = document.createElement('div');
+        card.className = 'course-card';
+        card.innerHTML = `
+          <div class="card-banner">
+            <div class="banner-top">
+              <div class="banner-logo-pill">sumaq</div>
+              <div class="status-badge ${claseEstado}">
+                <span class="status-dot"></span>
+                <span>${textoEstado}</span>
+              </div>
+            </div>
+
+            <div class="banner-content">
+              <div class="banner-texts">
+                <div class="banner-subtitle">${curso.bannerSub}</div>
+                <div class="banner-title">${curso.bannerTitle}</div>
+                <div class="banner-category">${curso.categoria}</div>
+                <div class="banner-year">2026</div>
+              </div>
+              <div class="banner-illustration">${curso.emoji}</div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div>
+              <div class="card-title-row">
+                <div class="doc-icon">📄</div>
+                <div class="card-course-name">${curso.codigo}</div>
+                <span class="info-circle" title="${curso.descripcion}">ⓘ</span>
+              </div>
+              <div class="card-topics">${curso.temasCompletados}/${curso.totalTemas} temas ${curso.porVencer && curso.estado !== 'completado' ? '• <strong style="color:#C8102E;">Prioritario</strong>' : ''}</div>
+            </div>
+
+            <div class="card-footer">
+              <button class="btn-continue" onclick="abrirCurso(${curso.id})">
+                Continuar ›
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // =========================================================
+    // NAVEGACIÓN A DETALLE DEL CURSO Y VIDEO SINTÉTICO
+    // =========================================================
+    function abrirCurso(id) {
+      const curso = cursosSumaq.find(c => c.id === id);
+      if (!curso) return;
+
+      cursoActivoId = id;
+
+      // Si estaba sin iniciar, pasa automáticamente a "en-curso"
+      if (curso.estado === 'sin-iniciar') {
+        curso.estado = 'en-curso';
+        actualizarContadores();
+      }
+
+      // Llenar textos del detalle
+      document.getElementById('detailCategory').textContent = `${curso.categoria} • POLLERÍA SUMAQ`;
+      document.getElementById('detailTitle').textContent = curso.codigo;
+      document.getElementById('detailDescription').textContent = curso.descripcion;
+      document.getElementById('detailTip').textContent = curso.tip;
+
+      const ul = document.getElementById('detailObjectives');
+      ul.innerHTML = curso.objetivos.map(obj => `<li>${obj}</li>`).join('');
+
+      const modList = document.getElementById('detailModules');
+      modList.innerHTML = `
+        <div class="module-item active-mod">
+          <div>
+            <strong style="font-size:0.9rem; color:var(--red-dark);">1. Video Sintético Demostrativo</strong>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Duración: 00:15 • Caso práctico en salón</div>
+          </div>
+          <span style="color:var(--red-primary); font-weight:bold;">▶ Viendo</span>
+        </div>
+        <div class="module-item">
+          <div>
+            <strong style="font-size:0.9rem;">2. Guía Rápida de Protocolo Sumaq</strong>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Lectura aplicada al turno</div>
+          </div>
+          <span style="font-size:0.8rem; color:var(--text-muted);">${curso.estado === 'completado' ? '✅ Listo' : 'Pendiente'}</span>
+        </div>
+      `;
+
+      const btnComp = document.getElementById('completeCourseBtn');
+      if (curso.estado === 'completado') {
+        btnComp.textContent = "✅ Curso Completado (1/1 temas)";
+        btnComp.style.background = "#10B981";
+        btnComp.style.color = "#FFFFFF";
+        btnComp.style.borderColor = "#059669";
+      } else {
+        btnComp.textContent = "✓ Marcar curso como completado";
+        btnComp.style.background = "var(--yellow-primary)";
+        btnComp.style.color = "var(--red-dark)";
+        btnComp.style.borderColor = "var(--red-primary)";
+      }
+
+      // Cambiar de vista
+      document.getElementById('catalog-view').style.display = 'none';
+      document.getElementById('course-detail-view').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Iniciar video sintético
+      reiniciarVideo();
+    }
+
+    function volverAlCatalogo() {
+      detenerVideo();
+      document.getElementById('course-detail-view').style.display = 'none';
+      document.getElementById('catalog-view').style.display = 'block';
+      renderizarCarrusel();
+      renderizarTarjetas();
+      actualizarContadores();
+    }
+
+    function marcarCompletado() {
+      const curso = cursosSumaq.find(c => c.id === cursoActivoId);
+      if (!curso) return;
+
+      curso.estado = 'completado';
+      curso.temasCompletados = 1;
+      actualizarContadores();
+      abrirCurso(curso.id); // Refresca el estado visual del botón
+    }
+
+    // =========================================================
+    // MOTOR DE VIDEO SINTÉTICO ANIMADO EN CANVAS (ROJO/AMARILLO/BLANCO)
+    // =========================================================
+    function iniciarLoopVideo() {
+      if (videoPlaying) return;
+      videoPlaying = true;
+      document.getElementById('playPauseBtn').textContent = "⏸ Pausar";
+      lastTimestamp = performance.now();
+      animFrameId = requestAnimationFrame(renderFrameVideo);
+    }
+
+    function detenerVideo() {
+      videoPlaying = false;
+      document.getElementById('playPauseBtn').textContent = "▶ Reproducir";
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+    }
+
+    function toggleVideo() {
+      if (videoPlaying) {
+        detenerVideo();
+      } else {
+        if (videoProgress >= VIDEO_DURATION) videoProgress = 0;
+        iniciarLoopVideo();
+      }
+    }
+
+    function reiniciarVideo() {
+      detenerVideo();
+      videoProgress = 0;
+      iniciarLoopVideo();
+    }
+
+    function seekVideo(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      videoProgress = ratio * VIDEO_DURATION;
+      dibujarEscenaCanvas(videoProgress);
+    }
+
+    function renderFrameVideo(now) {
+      if (!videoPlaying) return;
+      const dt = (now - lastTimestamp) / 1000;
+      lastTimestamp = now;
+
+      videoProgress += dt;
+      if (videoProgress >= VIDEO_DURATION) {
+        videoProgress = VIDEO_DURATION;
+        dibujarEscenaCanvas(videoProgress);
+        detenerVideo();
+        return;
+      }
+
+      dibujarEscenaCanvas(videoProgress);
+      animFrameId = requestAnimationFrame(renderFrameVideo);
+    }
+
+    function dibujarEscenaCanvas(t) {
+      const canvas = document.getElementById('synthetic-video');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const curso = cursosSumaq.find(c => c.id === cursoActivoId) || cursosSumaq[0];
+
+      // Actualizar barra y tiempo
+      const pct = (t / VIDEO_DURATION) * 100;
+      document.getElementById('videoProgressBar').style.width = `${pct}%`;
+      const sec = Math.floor(t).toString().padStart(2, '0');
+      document.getElementById('videoTimeDisplay').textContent = `00:${sec} / 00:15`;
+
+      // Fondo degradado Rojo Sumaq
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#9B0A21');
+      grad.addColorStop(1, '#C8102E');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Círculos decorativos amarillos animados
+      ctx.fillStyle = 'rgba(255, 199, 44, 0.14)';
+      ctx.beginPath();
+      ctx.arc(70 + Math.sin(t * 2) * 15, 70, 110, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(730, 380 + Math.cos(t * 2) * 15, 140, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Barra superior del video con marca Sumaq
+      ctx.fillStyle = '#FFC72C';
+      ctx.fillRect(0, 0, canvas.width, 46);
+      ctx.fillStyle = '#9B0A21';
+      ctx.font = 'bold 18px Segoe UI, sans-serif';
+      ctx.fillText(`🍗 POLLERÍA SUMAQ  |  CAPACITACIÓN INTERACTIVA`, 24, 30);
+
+      // Determinar escena actual (0-5s, 5-10s, 10-15s)
+      const sceneIndex = Math.min(2, Math.floor(t / 5));
+      const escena = curso.escenasVideo[sceneIndex];
+      const localT = t % 5; // tiempo dentro de la escena (0 a 5)
+
+      // Tarjeta blanca central animada
+      const slideY = Math.max(0, (1 - Math.min(1, localT * 3)) * 25);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(75, 85 + slideY, 650, 290, 18);
+      ctx.fill();
+
+      // Borde amarillo de la tarjeta
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#FFC72C';
+      ctx.stroke();
+
+      // Indicador de paso (1 de 3, 2 de 3, 3 de 3)
+      ctx.fillStyle = '#C8102E';
+      ctx.beginPath();
+      ctx.roundRect(105, 110 + slideY, 135, 30, 8);
+      ctx.fill();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 14px Segoe UI, sans-serif';
+      ctx.fillText(`ESCENA ${sceneIndex + 1} DE 3`, 125, 130 + slideY);
+
+      // Emoji animado con ligero rebote
+      const bounce = Math.sin(t * 6) * 6;
+      ctx.font = '88px Segoe UI Emoji, sans-serif';
+      ctx.fillText(escena.icono, 570, 235 + slideY + bounce);
+
+      // Título de la escena
+      ctx.fillStyle = '#1F2937';
+      ctx.font = 'bold 28px Segoe UI, sans-serif';
+      ctx.fillText(escena.titulo, 105, 190 + slideY);
+
+      // Subtítulo / Diálogo de ejemplo
+      ctx.fillStyle = '#4B5563';
+      ctx.font = '20px Segoe UI, sans-serif';
+      wrapText(ctx, `"${escena.texto}"`, 105, 235 + slideY, 430, 28);
+
+      // Barra de progreso inferior de la escena
+      ctx.fillStyle = '#F3F4F6';
+      ctx.fillRect(105, 330 + slideY, 590, 10);
+      ctx.fillStyle = '#FFC72C';
+      ctx.fillRect(105, 330 + slideY, 590 * (localT / 5), 10);
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(' ');
+      let line = '';
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    }
+
+    // Arrancar aplicación
+    init();
+  </script>
+</body>
+</html>
